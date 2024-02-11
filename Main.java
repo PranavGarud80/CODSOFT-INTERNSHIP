@@ -1,55 +1,58 @@
 import java.util.Scanner;
 
-class Grade{
-    public String grade(int avgp){
-        switch (avgp / 10) {
-            case 10:
-                return "A+";
-            case 9:
-                return "A";
-            case 8:
-                return "B+";
-            case 7:
-                return "B";
-            case 6:
-                return "C";
-            case 5:
-                return "D";
-            default:
-                return "F";
-        }
+class rangen{
+    public int genrate(int max,int min){
+        return (int) (Math.random()*(max - min + 1) + min);
     }
 }
 
-public class Main{
-    public static void main(String[] args){
-        Grade g = new Grade();
+public class Main {
+
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        rangen rg = new rangen();
+        int totalAttempts = 0;
+        int win = 0;
 
-        //Taking input of how many subjects are there
-        System.out.println("Enter the amount of subjects");
-        int tsubs = sc.nextInt();
-        int tmarks = 0;
+        while (true) {
+            System.out.println("Enter the maximum number");
+            int max = sc.nextInt();
+            System.out.println("Enter the minimum number");
+            int min = sc.nextInt();
+            sc.nextLine();
 
-        //Taking and adding all the marks
-        for (int i = 0; i < tsubs; i++) {
-            System.out.println("Enter the marks obtained in subject " + (i + 1));
-            int marks = sc.nextInt();
-            tmarks += marks;
+            int cnum = rg.genrate(max, min);
+            int attempts = 0;
+
+            while (true) {
+                System.out.println("Guess a number between "+max+" and "+min);
+                int gnum = sc.nextInt();
+                attempts++;
+
+                if (gnum > cnum) {
+                    System.out.println("Its Greater");
+                } else if (gnum < cnum){
+                    System.out.println("Its Lower");
+                }else{
+                    System.out.println("Correct Guess");
+                    win++;
+                    break;
+                }
+            }
+            totalAttempts += attempts;
+            System.out.println("Attempts = " + attempts);
+            System.out.println("Wins = " + win);
+
+            double winrate = (double) win / totalAttempts*100;
+            System.out.printf("Your winrate is %.2f%%\n",winrate);
+
+            System.out.println("Do you want to play again (yes/no)");
+            String playAgain = sc.next();
+            if(!playAgain.equalsIgnoreCase("yes")){
+                sc.close();
+                System.exit(0);
+            }
+            sc.nextLine();
         }
-
-        //Calculating Percentage
-        int avgp = tmarks / tsubs;
-
-        //Calculating Grades
-        String Grade = g.grade(avgp);
-
-        //Displaying all the Data
-        System.out.println("Total marks obtained :- " + tmarks);
-        System.out.println("Percentage obtained :- " + avgp+"%");
-        System.out.println("Grade obtained :- " + Grade);
-
-        sc.close();
-        //Lets test the code
     }
 }
